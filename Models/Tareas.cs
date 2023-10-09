@@ -9,28 +9,30 @@ namespace Tareas{
         private string? titulo;
         private string? descripcion;
         private Estados estado;
-        public int Id {get =>id;}
-        public string? Titulo {get => titulo;}
-        public string? Descripcion {get => descripcion;}
-        public Estados Estado {get => estado;}
+
+        public int Id { get => id; set => id = value; }
+        public string? Titulo { get => titulo; set => titulo = value; }
+        public string? Descripcion { get => descripcion; set => descripcion = value; }
+        public Estados Estado { get => estado; set => estado = value; }
+
         public Tarea(){
-            this.estado = Estados.Pendiente;
+            this.Estado = Estados.Pendiente;
         }
         public Tarea(int idTarea, string? tituloTarea, string? descripcionTarea){
-            this.id = idTarea;
-            this.titulo = tituloTarea;
-            this.descripcion = descripcionTarea;
-            this.estado = Estados.Pendiente;
+            this.Id = idTarea;
+            this.Titulo = tituloTarea;
+            this.Descripcion = descripcionTarea;
+            this.Estado = Estados.Pendiente;
         }
         public int GetIdTarea(){
-            return this.id;
+            return this.Id;
         }
         public bool ActualizarEstado(int estadoTarea){
             if (estadoTarea == 1){
-                this.estado = Estados.enProgreso;
+                this.Estado = Estados.enProgreso;
                 return true;
             }else if (estadoTarea == 2){
-                this.estado = Estados.Completada;
+                this.Estado = Estados.Completada;
                 return true;
             }
             return false;

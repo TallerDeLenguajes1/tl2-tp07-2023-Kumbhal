@@ -3,39 +3,33 @@ using Tareas;
 
 namespace ManejoTarea{
     public class ManejoTareas{
-        private static ManejoTareas? instancia;
-        private AccesoADatos? accesoADato;
-        private List<Tarea>? listadoTareas;
-        public List<Tarea>? ListadoTareas{get => listadoTareas;}
-        public ManejoTareas(){}
-        public static ManejoTareas GetInstance(){
-            if(instancia == null){
-                instancia = new ManejoTareas();
-                instancia.CargarTareas();
-            }
-            return instancia;
+        private AccesoADatos? AccesoADato;
+        private List<Tarea>? ListadoTareas;
+        public ManejoTareas(AccesoADatos accesoADatos){
+            this.AccesoADato = accesoADatos;
+            ListadoTareas = accesoADatos.CargarDatosTarea();
         }
         public void CargarTareas(){
-            listadoTareas = accesoADato?.CargarDatosTarea("Tareas.json");
+            ListadoTareas = AccesoADato?.CargarDatosTarea();
         }
         public void GuardarTareas(){
-            accesoADato?.GuardarDatosTarea(listadoTareas!);
+            AccesoADato?.GuardarDatosTarea(ListadoTareas!);
         }
         public Tarea PostTarea(int idTarea, string? tituloTarea, string? descripcionTarea){
             Tarea tareaCreada = new Tarea(idTarea, tituloTarea, descripcionTarea);
-            listadoTareas!.Add(tareaCreada);
-            accesoADato!.GuardarDatosTarea(listadoTareas);
+            ListadoTareas!.Add(tareaCreada);
+            AccesoADato!.GuardarDatosTarea(ListadoTareas);
             return tareaCreada;
         }
         public Tarea GetTareaId(int idTarea){
-            Tarea tareaBuscada = listadoTareas!.FirstOrDefault(tarea => tarea.GetIdTarea() == idTarea)!;
+            Tarea tareaBuscada = ListadoTareas!.FirstOrDefault(tarea => tarea.GetIdTarea() == idTarea)!;
             return tareaBuscada;
         }
         public bool ActualizarTarea(int estadoTarea, int idTarea){
             Tarea tareaBuscada = GetTareaId(idTarea);
             if (tareaBuscada != null){
                 if (tareaBuscada.ActualizarEstado(estadoTarea)){
-                    accesoADato!.GuardarDatosTarea(listadoTareas!);
+                    AccesoADato!.GuardarDatosTarea(ListadoTareas!);
                     return true;
                 }
             }
@@ -44,16 +38,16 @@ namespace ManejoTarea{
         public List<Tarea> EliminarTarea(int idTarea){
             Tarea tareaBuscada = GetTareaId(idTarea);
             if (tareaBuscada != null){
-                listadoTareas!.Remove(tareaBuscada);
-                accesoADato!.GuardarDatosTarea(listadoTareas!); 
+                ListadoTareas!.Remove(tareaBuscada);
+                AccesoADato!.GuardarDatosTarea(ListadoTareas!); 
             }
-            return listadoTareas!;
+            return ListadoTareas!;
         }
-        public List<Tarea> GetListadoTareas(){
-            return listadoTareas!;
+        public List<Tarea>? MostrarTareas(){
+            return ListadoTareas;
         }
         public List<Tarea> GetListadoTareasCompletadas(){
-            return listadoTareas!.FindAll(tareas => tareas.Estado == Tarea.Estados.Completada);
+            return ListadoTareas.FindAll(tareas => tareas.Estado == Tarea.Estados.Completada);
         }
     }
 }

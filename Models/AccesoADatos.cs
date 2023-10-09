@@ -4,14 +4,15 @@ using System.Text.Json;
 namespace AccesoADato{
     public class AccesoADatos{
         public AccesoADatos(){}
-        public List<Tarea> CargarDatosTarea(string? rutaArchivo){
+        public List<Tarea> CargarDatosTarea(){
+            string? rutaArchivo = "Tareas.json";
+            List<Tarea>? nuevaListaTarea = null;
             if(File.Exists(rutaArchivo)){
-                string? datosCargados = File.ReadAllText(rutaArchivo);
-                if (!string.IsNullOrEmpty(datosCargados)){
-                    return JsonSerializer.Deserialize<List<Tarea>>(datosCargados)!;
-                }
+                string JsonTarea = File.ReadAllText(rutaArchivo);
+                List<Tarea>? ListAux = JsonSerializer.Deserialize<List<Tarea>>(JsonTarea);
+                nuevaListaTarea = ListAux;
             }
-            return new List<Tarea>();
+            return nuevaListaTarea;
         }
 
         public void GuardarDatosTarea(List<Tarea> listadoTareas){
